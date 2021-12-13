@@ -1,4 +1,4 @@
-start schematics .:seventy-one-dev-schematics
+start schematics .:seventy-one-dev-schematics --dry-run=false
 
 # Getting Started With Schematics
 
