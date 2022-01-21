@@ -1,13 +1,11 @@
 
 import {
   apply,
-  chain,
+  // chain,
   filter,
   MergeStrategy,
-  mergeWith,
-  
-  // move,
-  
+  mergeWith,  
+  move,
   Rule,
   SchematicContext,
   // SchematicsException,
@@ -17,6 +15,7 @@ import {
   
 } from '@angular-devkit/schematics';
 import {   
+  // normalize,
   // normalize,
   strings 
 } from '@angular-devkit/core';
@@ -28,27 +27,25 @@ import {
 // You don't have to export the function as default. You can also have more than one rule factory
 // per file.
 export function seventyOneDevSchematics(_options: any): Rule {
-  console.log(_options)
-  return (tree: Tree, _context: SchematicContext) => {
-    // console.log('DIR', __dirname);
-    // const folderPath = normalize(strings.dasherize(__dirname))
+  // console.log(_options)
+  return (tree: Tree, _context: SchematicContext) => {    
     let files = url('./files') 
-    // const workspace = getWorkSpace(_options, tree)
-    // console.log(workspace)
     const newTree = apply(files,[
-      // move(folderPath),
+      move(_options.path),
       template({
           ...strings,
           ..._options
         }),
-        specFilter(_options)
+      specFilter(_options),
+        
     ])
 
     const templateRule = mergeWith(newTree,MergeStrategy.Default)
-    const chainedRule = chain([
-      templateRule
-    ])
-    return chainedRule(tree, _context);;
+    // const chainedRule = chain([
+    //   templateRule
+    // ])
+
+    return templateRule(tree, _context);
   };
 }
 
