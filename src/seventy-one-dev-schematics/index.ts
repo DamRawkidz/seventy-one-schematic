@@ -9,11 +9,13 @@ import {
   move,
   Rule,
   SchematicContext,
-  // SchematicsException,
+
+  SchematicsException,
+
   // SchematicsException,
   // SchematicsException,
   template,
-  Tree,
+
   url,
 
 } from '@angular-devkit/schematics';
@@ -23,6 +25,11 @@ import {
   // normalize,
   strings
 } from '@angular-devkit/core';
+
+// import { findModuleFromOptions } from '@schematics/angular/utility/find-module';
+
+import { Tree } from '@angular-devkit/schematics/src/tree/interface';
+import ts = require('typescript');
 // import ts = require('typescript');
 // import * as ts from 'typescript';
 // import { NodePackageInstallTask,RunSchematicTask } from '@angular-devkit/schematics/tasks';
@@ -32,10 +39,10 @@ import {
 // You don't have to export the function as default. You can also have more than one rule factory
 // per file.
 export function seventyOneDevSchematics(_options: any): Rule {
-  return (tree: Tree, _context: SchematicContext) => {
-    // const workspace = getWorkSpace(_options, tree)
+  return (host: Tree, _context: SchematicContext) => {
+    const workspace = getWorkSpace(_options, host)
     let files = url('./files')
-    const newTree = apply(files, [
+    const newhost = apply(files, [
       move(_options.path),
       template({
         ...strings,
@@ -44,66 +51,62 @@ export function seventyOneDevSchematics(_options: any): Rule {
       specFilter(_options),
     ])
 
-    // const updateModuleRule = updateRootModule(_options, workspace)
+    const updateModuleRule = updateRootModule(_options, workspace)
 
-    const templateRule = mergeWith(newTree, MergeStrategy.Default)
+    const templateRule = mergeWith(newhost, MergeStrategy.Default)
     const chainedRule = chain([
       templateRule,
-      // updateModuleRule
+      updateModuleRule
     ])
 
-    return chainedRule(tree, _context);
+    return chainedRule(host, _context);
   };
 }
 
-// function getWorkSpace(_option: any, tree: Tree) {
-//   const workspec = tree.read('/angular.json');
+function getWorkSpace(_option: any, host: Tree) {
+  const workspec = host.read('/angular.json');
 
-//   if (!workspec) {
-//     throw new SchematicsException('angular.json file not found');
-//   }
+  if (!workspec) {
+    throw new SchematicsException('angular.json file not found');
+  }
+  return JSON.parse(workspec.toString())
+}
 
-//   return JSON.parse(workspec.toString())
-// }
+function updateRootModule(_option: any, workspace: any) {
+  // console.log(_option)
 
-// function getWorkSpace(_option: any, tree: Tree) {
-//   const workspec = tree.read('/angular.json');
+  return (host: Tree, _context: SchematicContext): Tree => {
+    _option.project = (_option.project === 'defaultProject') ? workspace.defaultProject : _option.project
+    // const project = workspace.project[_option.project]
 
-//   if(!workspec){
-//     throw new SchematicsException('angular.json file not found');
-//   }
+    const moduleName = strings.dasherize(_option.name)
 
-//   return JSON.parse(workspec.toString())
-// }
-
-// function updateRootModule(_option: any, workspace: any) {
-//   console.log(_option)
-//   return (tree: Tree, _context: SchematicContext): Tree => {
-//     _option.project = (_option.project === 'defaultProject') ? workspace.defaultProject : _option.project
-//     const project = workspace.project[_option.project]
-//     console.log(project)
-//     const moduleName = strings.dasherize(_option.name)
-//     console.log(moduleName)
-//     const exportModuleName = strings.classify(_option.name)
-//     console.log(exportModuleName)
-//     const modulePath = strings.dasherize(_option.path)
-//     const rootModulePath = `${project.root}/${project.sourceRoot}/${project.prefix}/${project.prefix}.module.ts`;
-//     console.log(rootModulePath)
-//     const importContent = `import { ${exportModuleName}Module } from './${modulePath}/${moduleName}/${moduleName}.module';`
-
-//     const moduleFiles = getAsSourceFile(tree, rootModulePath)
-//     const lastImportEndPos = findlastImportEndPos(moduleFiles)
-//     const importArrayEndPos = findImportArray(moduleFiles)
+    const exportModuleName = strings.classify(_option.name)
 
 
-//     const rec = tree.beginUpdate(rootModulePath)
-//     rec.insertLeft(lastImportEndPos + 1, importContent)
-//     rec.insertLeft(importArrayEndPos - 1, `, ${exportModuleName}Module`)
-//     tree.commitUpdate(rec)
 
-//     return tree
-//   }
-// }
+    if (!_option.path) {
+      _option.path = 'src/app/shared/shared.module.ts'
+    }
+    const modulePath = strings.dasherize(_option.path)
+    // const rootModulePath = `${project.root}/${project.sourceRoot}/${project.prefix}/${project.prefix}.module.ts`;
+    const sharedModulePath = `src/app/shared/shared.module.ts`;
+    console.log('rootModulePath', sharedModulePath)
+    const importContent = `import { ${exportModuleName}Module } from './${modulePath}/${moduleName}/${moduleName}.module';`
+
+    const moduleFiles = getAsSourceFile(host, sharedModulePath)
+    const lastImportEndPos = findlastImportEndPos(moduleFiles)
+    const importArrayEndPos = findImportArray(moduleFiles)
+
+
+    const rec = host.beginUpdate(sharedModulePath)
+    rec.insertLeft(lastImportEndPos + 1, importContent)
+    rec.insertLeft(importArrayEndPos - 1, `, ${exportModuleName}Module`)
+    host.commitUpdate(rec)
+
+    return host
+  }
+}
 
 
 
@@ -118,61 +121,53 @@ function specFilter(_options: any): Rule {
 }
 
 
-// function getAsSourceFile(tree: Tree, path: string): ts.SourceFile {
-//   const file = tree.read(path);
-//   if (!file) {
-//     throw new SchematicsException(`${path} not found`)
-//   }
+function getAsSourceFile(host: Tree, path: string): ts.SourceFile {
+  const file = host.read(path);
+  if (!file) {
+    throw new SchematicsException(`${path} not found`)
+  }
 
-//   return ts.createSourceFile(
-//     path,
-//     file.toString(),
-//     ts.ScriptTarget.Latest,
-//     true
-//   )
-// }
+  return ts.createSourceFile(
+    path,
+    file.toString(),
+    ts.ScriptTarget.Latest,
+    true
+  )
+}
 
-// function findlastImportEndPos(file: ts.SourceFile): number {
-//   let pos: number = 0;
-//   file.forEachChild((child: ts.Node) => {
-//     if (child.kind === ts.SyntaxKind.ImportDeclaration) {
-//       pos = child.end
-//     }
-//   })
+function findlastImportEndPos(file: ts.SourceFile): number {
+  let pos: number = 0;
+  file.forEachChild((child: ts.Node) => {
+    if (child.kind === ts.SyntaxKind.ImportDeclaration) {
+      pos = child.end
+    }
+  })
 
-//   return pos;
-// }
+  return pos;
+}
 
-// function findImportArray(file: ts.SourceFile): number {
-//   let pos: number = 0;
+function findImportArray(file: ts.SourceFile): number {
+  let pos: number = 0;
 
-//   file.forEachChild((node: ts.Node) => {
-//     if (node.kind === ts.SyntaxKind.ClassDeclaration) {
-//       node.forEachChild((classChild: ts.Node) => {
-//         if (classChild.kind === ts.SyntaxKind.Decorator) {
-//           classChild.forEachChild((moduleDeclaration: ts.Node) => {
-//             moduleDeclaration.forEachChild((objectLitreal: ts.Node) => {
-//               objectLitreal.forEachChild((property: ts.Node) => {
-//                 if (property.getFullText().includes('imports')) {
-//                   pos = property.end
-//                 }
-//               })
-//             })
-//           })
-//         }
-//       })
-//     }
-//   })
+  file.forEachChild((node: ts.Node) => {
+    if (node.kind === ts.SyntaxKind.ClassDeclaration) {
+      node.forEachChild((classChild: ts.Node) => {
+        if (classChild.kind === ts.SyntaxKind.Decorator) {
+          classChild.forEachChild((moduleDeclaration: ts.Node) => {
+            moduleDeclaration.forEachChild((objectLitreal: ts.Node) => {
+              objectLitreal.forEachChild((property: ts.Node) => {
+                if (property.getFullText().includes('imports')) {
+                  pos = property.end
+                }
+              })
+            })
+          })
+        }
+      })
+    }
+  })
 
-//   return pos
-// }
+  return pos
+}
 
-// function searchFilter(_options: any): Rule {
-//   if(_options.search == 'false'){
-//     return filter(path => {
-//       return !path.match(/\.directive\.ts$/) && !path.match(/directive\.ts$/)
-//     })
-//   } 
 
-//   return filter(path => !path.match(/directive\.ts$/))
-// }
