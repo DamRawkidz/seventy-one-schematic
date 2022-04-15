@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
   "schematics": {  
-    "seventy-one-dev-schematics": {
+    "se-service": {
       "description": "A blank schematic.",
       "factory": "./seventy-one-dev-schematics/index#seventyOneDevSchematics",
       "schema": "./seventy-one-dev-schematics/schema.json"

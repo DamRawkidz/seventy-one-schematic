@@ -1,4 +1,7 @@
 start schematics .:seventy-one-dev-schematics --dry-run=false
+schematics .:se-service --dry-run=false
+
+<!-- se-service -->
 
 # Getting Started With Schematics
 
