@@ -22,6 +22,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatMenuModule } from '@angular/material/menu'
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { SearchTestDirective } from './src/app/shared/shared.module.ts/search-Test.directive.ts';import { TestAutoLoopDirective } from './src/app/shared/shared.module.ts/auto-loop-Test.directive.ts';
 
 
 
@@ -54,12 +55,12 @@ const mat =[
   declarations: [
     DemoDirective,
     DemoPipe
-  ],
+  , SearchTestDirective, TestAutoLoopDirective],
   imports: [
-    ...mat,
+    ...mat
   ],
   exports: [
     ...mat
-  ]
+  , SearchTestDirective, TestAutoLoopDirective]
 })
 export class SharedModule { }

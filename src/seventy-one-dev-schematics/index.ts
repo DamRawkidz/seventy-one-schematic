@@ -7,6 +7,7 @@ import {
   MergeStrategy,
   mergeWith,
   move,
+  noop,
   Rule,
   SchematicContext,
 
@@ -49,11 +50,13 @@ export function seventyOneDevSchematics(_options: any): Rule {
         ..._options
       }),
       specFilter(_options),
+      searchFilter(_options),
+      autoLoopFilter(_options)
     ])
 
     const updateModuleRule = updateRootModule(_options, workspace)
 
-    const templateRule = mergeWith(newhost, MergeStrategy.Overwrite)
+    const templateRule = mergeWith(newhost, MergeStrategy.Default)
     const chainedRule = chain([
       templateRule,
       updateModuleRule
@@ -79,29 +82,53 @@ function updateRootModule(_option: any, workspace: any) {
     _option.project = (_option.project === 'defaultProject') ? workspace.defaultProject : _option.project
     // const project = workspace.project[_option.project]
 
-    const moduleName = strings.dasherize(_option.name)
+    // const moduleName = strings.dasherize(_option.name)
 
-    const exportModuleName = strings.classify(_option.name)
+    // const exportModuleName = strings.classify(_option.name)
 
 
 
     if (!_option.path) {
       _option.path = 'src/app/shared/shared.module.ts'
     }
+
     const modulePath = strings.dasherize(_option.path)
-    // const rootModulePath = `${project.root}/${project.sourceRoot}/${project.prefix}/${project.prefix}.module.ts`;
     const sharedModulePath = `src/app/shared/shared.module.ts`;
-    console.log('rootModulePath', sharedModulePath)
-    const importContent = `import { ${exportModuleName}Module } from './${modulePath}/${moduleName}/${moduleName}.module';`
-
-    const moduleFiles = getAsSourceFile(host, sharedModulePath)
-    const lastImportEndPos = findlastImportEndPos(moduleFiles)
-    const importArrayEndPos = findImportArray(moduleFiles)
-
-
     const rec = host.beginUpdate(sharedModulePath)
-    rec.insertLeft(lastImportEndPos + 1, importContent)
-    rec.insertLeft(importArrayEndPos - 1, `, ${exportModuleName}Module`)
+
+    if(_option.search == 'true'){
+      const directiveName =  strings.classify(_option.name)
+      const importContent = `import { Search${directiveName}Directive } from './${modulePath}/search-${directiveName}.directive.ts';`
+
+      const moduleFiles = getAsSourceFile(host, sharedModulePath)
+      const lastImportEndPos = findlastImportEndPos(moduleFiles)
+      const DeclarationsEndPos = findDeclarationsArray(moduleFiles)
+      const exportEndPos = findExportArray(moduleFiles)
+   
+      rec.insertLeft(lastImportEndPos + 1, importContent)
+      rec.insertLeft(DeclarationsEndPos - 1, `, Search${directiveName}Directive`)
+      rec.insertLeft(exportEndPos - 1, `, Search${directiveName}Directive`)
+    }
+
+    if(_option.loop == 'true'){
+      const directiveName =  strings.classify(_option.name)
+      const importContent = `import { ${directiveName}AutoLoopDirective } from './${modulePath}/auto-loop-${directiveName}.directive.ts';`
+
+      const moduleFiles = getAsSourceFile(host, sharedModulePath)
+      const lastImportEndPos = findlastImportEndPos(moduleFiles)
+      const DeclarationsEndPos = findDeclarationsArray(moduleFiles)
+      const exportEndPos = findExportArray(moduleFiles)
+   
+      rec.insertLeft(lastImportEndPos + 1, importContent)
+      rec.insertLeft(DeclarationsEndPos - 1, `, ${directiveName}AutoLoopDirective`)
+      rec.insertLeft(exportEndPos - 1, `, ${directiveName}AutoLoopDirective`)
+
+    }
+    
+    
+
+
+
     host.commitUpdate(rec)
 
     return host
@@ -118,6 +145,22 @@ function specFilter(_options: any): Rule {
   }
 
   return filter(path => !path.match(/test\.ts$/))
+}
+
+function searchFilter(_options: any): Rule {
+  if (_options.search == 'false') {
+    return filter(path => !path.includes('search-'))
+  }
+
+  return noop()
+}
+
+function autoLoopFilter(_options: any): Rule {
+  if (_options.loop == 'false') {
+    return filter(path => !path.includes('loop-'))
+  }
+
+  return noop()
 }
 
 
@@ -146,7 +189,30 @@ function findlastImportEndPos(file: ts.SourceFile): number {
   return pos;
 }
 
-function findImportArray(file: ts.SourceFile): number {
+// function findImportArray(file: ts.SourceFile): number {
+//   let pos: number = 0;
+
+//   file.forEachChild((node: ts.Node) => {
+//     if (node.kind === ts.SyntaxKind.ClassDeclaration) {
+//       node.forEachChild((classChild: ts.Node) => {
+//         if (classChild.kind === ts.SyntaxKind.Decorator) {
+//           classChild.forEachChild((moduleDeclaration: ts.Node) => {
+//             moduleDeclaration.forEachChild((objectLitreal: ts.Node) => {
+//               objectLitreal.forEachChild((property: ts.Node) => {
+//                 if (property.getFullText().includes('imports')) {
+//                   pos = property.end
+//                 }
+//               })
+//             })
+//           })
+//         }
+//       })
+//     }
+//   })
+
+//   return pos
+// }
+function findDeclarationsArray(file: ts.SourceFile): number {
   let pos: number = 0;
 
   file.forEachChild((node: ts.Node) => {
@@ -156,7 +222,31 @@ function findImportArray(file: ts.SourceFile): number {
           classChild.forEachChild((moduleDeclaration: ts.Node) => {
             moduleDeclaration.forEachChild((objectLitreal: ts.Node) => {
               objectLitreal.forEachChild((property: ts.Node) => {
-                if (property.getFullText().includes('imports')) {
+                if (property.getFullText().includes('declarations')) {
+                  pos = property.end
+                }
+              })
+            })
+          })
+        }
+      })
+    }
+  })
+
+  return pos
+}
+
+function findExportArray(file: ts.SourceFile): number {
+  let pos: number = 0;
+
+  file.forEachChild((node: ts.Node) => {
+    if (node.kind === ts.SyntaxKind.ClassDeclaration) {
+      node.forEachChild((classChild: ts.Node) => {
+        if (classChild.kind === ts.SyntaxKind.Decorator) {
+          classChild.forEachChild((moduleDeclaration: ts.Node) => {
+            moduleDeclaration.forEachChild((objectLitreal: ts.Node) => {
+              objectLitreal.forEachChild((property: ts.Node) => {
+                if (property.getFullText().includes('exports')) {
                   pos = property.end
                 }
               })

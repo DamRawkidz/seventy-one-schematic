@@ -33,6 +33,11 @@
             "type": "string",
             "description": "generate directive for autocomplete",
             "default": "true"
-        }
+        },
+        "loop": {
+          "type": "string",
+          "description": "generate directive for loop",
+          "default": "true"
+      }
     }
 }

@@ -1,12 +1,12 @@
 import { Directive, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
-import { <%= classify(name) %> Service } from './<%= classify(name) %>.service';
+import { <%= classify(name) %>Service } from './<%= classify(name) %>.service';
 import { tap } from 'rxjs/operators';
 
 
 @Directive({
-  selector: '[app<%= classify(name) %>]'
+  selector: '[app<%= classify(name) %>AutoLoop]'
 })
-export class <%= classify(name) %>Directive implements OnInit {
+export class <%= classify(name) %>AutoLoopDirective implements OnInit {
 
   constructor(
     private templateRef: TemplateRef < any >,

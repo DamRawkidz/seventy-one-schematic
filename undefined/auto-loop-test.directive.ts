@@ -1,12 +1,12 @@
 import { Directive, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
-import { Test Service } from './Test.service';
+import { TestService } from './Test.service';
 import { tap } from 'rxjs/operators';
 
 
 @Directive({
-  selector: '[appTest]'
+  selector: '[appTestAutoLoop]'
 })
-export class TestDirective implements OnInit {
+export class TestAutoLoopDirective implements OnInit {
 
   constructor(
     private templateRef: TemplateRef < any >,
