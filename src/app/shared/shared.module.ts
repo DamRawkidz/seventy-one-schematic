@@ -22,10 +22,10 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatMenuModule } from '@angular/material/menu'
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { TestModule } from './src/app/shared/shared.module.ts/test/test.module';
-import { SubjectModule } from './src/app/shared/shared.module.ts/subject/subject.module';
 
-const mat = [
+
+
+const mat =[
   CommonModule,
   ReactiveFormsModule,
   FormsModule,

@@ -53,7 +53,7 @@ export function seventyOneDevSchematics(_options: any): Rule {
 
     const updateModuleRule = updateRootModule(_options, workspace)
 
-    const templateRule = mergeWith(newhost, MergeStrategy.Default)
+    const templateRule = mergeWith(newhost, MergeStrategy.Overwrite)
     const chainedRule = chain([
       templateRule,
       updateModuleRule

@@ -1,7 +1,7 @@
 import { Directive, ElementRef, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subject } from 'rxjs';
 import { debounceTime, map, switchMap, tap, takeUntil, filter } from 'rxjs/operators';
-import { Test Service } from './Test/Test.service';
+import { Test Service } from './Test.service';
 
 @Directive({
   selector: '[appTest]'

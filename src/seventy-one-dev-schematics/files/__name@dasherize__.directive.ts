@@ -1,7 +1,7 @@
 import { Directive, ElementRef, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subject } from 'rxjs';
 import { debounceTime, map, switchMap, tap, takeUntil, filter } from 'rxjs/operators';
-import { <%= classify(name) %> Service } from './<%= classify(name) %>/<%= classify(name) %>.service';
+import { <%= classify(name) %> Service } from './<%= classify(name) %>.service';
 
 @Directive({
   selector: '[app<%= classify(name) %>]'
