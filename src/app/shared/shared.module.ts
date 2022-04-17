@@ -22,10 +22,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatMenuModule } from '@angular/material/menu'
-import { SearchMajorDirective } from './src/app/shared/shared.module.ts/search-Major.directive.ts'; 
-import { MajorAutoLoopDirective } from './src/app/shared/shared.module.ts/auto-loop-Major.directive.ts'; import { SearchCurDirective } from './src/app/shared/shared.module.ts/search-Cur.directive.ts'; 
-import { CurAutoLoopDirective } from './src/app/shared/shared.module.ts/auto-loop-Cur.directive.ts'; 
-
 
 const mat =[
   CommonModule,
@@ -56,20 +52,13 @@ const mat =[
   declarations: [
     DemoDirective,
     DemoPipe
-,SearchMajorDirective 
-,MajorAutoLoopDirective 
-,SearchCurDirective 
-,CurAutoLoopDirective 
 ],
   imports: [
     ...mat
   ],
   exports: [
     ...mat
-,SearchMajorDirective 
-,MajorAutoLoopDirective 
-,SearchCurDirective 
-,CurAutoLoopDirective 
+
 ]
 })
 export class SharedModule { }

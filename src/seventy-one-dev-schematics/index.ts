@@ -30,8 +30,11 @@ import {
 // import { findModuleFromOptions } from '@schematics/angular/utility/find-module';
 
 import { Tree } from '@angular-devkit/schematics/src/tree/interface';
+
+
+import { InsertChange } from '@schematics/angular/utility/change';
 import ts = require('typescript');
-// import ts = require('typescript');
+import { addDeclarationToModule } from '../lib/schematics-angular-utils/ast-utils';
 // import * as ts from 'typescript';
 // import { NodePackageInstallTask,RunSchematicTask } from '@angular-devkit/schematics/tasks';
 // import { NodePackageTaskOptions } from '@angular-devkit/schematics/tasks/package-manager/options';
@@ -97,7 +100,30 @@ function updateRootModule(_option: any, workspace: any) {
     const rec = host.beginUpdate(sharedModulePath)
 
     if(_option.search == 'true'){
-      const directiveName =  strings.classify(_option.name)
+      const text = host.read('src/app/shared/shared.module.ts');
+      if (text === null) {
+        throw new SchematicsException('dont find');
+      }
+    
+      const sourceText = text.toString('utf-8');
+      const source = ts.createSourceFile('src/app/shared/shared.module.ts', sourceText, ts.ScriptTarget.Latest, true);
+      const changes = addDeclarationToModule(
+        source,
+        sharedModulePath,
+        'DashboardComponent',
+        './dashboard.component'
+      ) as InsertChange[];
+      
+      for (const change of changes) {
+        if (change instanceof InsertChange) {
+          rec.insertLeft(change.pos, change.toAdd);
+        }
+      }
+    // host.commitUpdate(rec);
+    // console.log(host.get(modulePath)?.content.toString())
+
+      if(false){
+        const directiveName =  strings.classify(_option.name)
       const importContent = `import { Search${directiveName}Directive } from './${modulePath}/search-${directiveName}.directive.ts'; \n`
 
       const moduleFiles = getAsSourceFile(host, sharedModulePath)
@@ -108,9 +134,11 @@ function updateRootModule(_option: any, workspace: any) {
       rec.insertLeft(lastImportEndPos + 1, importContent)
       rec.insertLeft(DeclarationsEndPos - 1, `,Search${directiveName}Directive \n`)
       rec.insertLeft(exportEndPos - 1, `,Search${directiveName}Directive \n`)
+      }
+      
     }
 
-    if(_option.loop == 'true'){
+    if(_option.loop == 'false'){
       const directiveName =  strings.classify(_option.name)
       const importContent = `import { ${directiveName}AutoLoopDirective } from './${modulePath}/auto-loop-${directiveName}.directive.ts'; \n`
 
@@ -130,6 +158,7 @@ function updateRootModule(_option: any, workspace: any) {
 
 
     host.commitUpdate(rec)
+    
 
     return host
   }
