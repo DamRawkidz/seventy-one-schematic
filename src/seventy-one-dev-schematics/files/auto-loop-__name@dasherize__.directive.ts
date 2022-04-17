@@ -1,5 +1,5 @@
 import { Directive, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
-import { <%= classify(name) %>Service } from './<%= classify(name) %>.service';
+import { <%= classify(name) %>Service } from './<%= dasherize(name) %>.service';
 import { tap } from 'rxjs/operators';
 
 

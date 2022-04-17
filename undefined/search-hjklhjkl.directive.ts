@@ -1,16 +1,16 @@
 import { Directive, ElementRef, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subject } from 'rxjs';
 import { debounceTime, map, switchMap, tap, takeUntil, filter } from 'rxjs/operators';
-import { <%= classify(name) %>Service } from './<%= dasherize(name) %>.service';
+import { HjklhjklService } from './hjklhjkl.service';
 
 @Directive({
-  selector: '[appSearch<%= classify(name) %>]'
+  selector: '[appSearchHjklhjkl]'
 })
-export class Search<%= classify(name) %>Directive implements OnInit, OnDestroy  {
+export class SearchHjklhjklDirective implements OnInit, OnDestroy  {
   @Output() searchResult = new EventEmitter();
   private unsubAll$ = new Subject<boolean>()
   constructor(
-    private <%= dasherize(name) %>SV: <%= classify(name) %>Service,
+    private hjklhjklSV: HjklhjklService,
     private element: ElementRef
   ) { }
 
@@ -19,7 +19,7 @@ export class Search<%= classify(name) %>Directive implements OnInit, OnDestroy  
       debounceTime(500),
       map((e: any) => e.target.value),
       filter(text => text.length >= 3),
-      switchMap(text => this.<%= dasherize(name) %>SV.queryString(`${text}`)),
+      switchMap(text => this.hjklhjklSV.queryString(`${text}`)),
       tap(result => this.searchResult.emit(result)),
       takeUntil(this.unsubAll$)
     ).subscribe()

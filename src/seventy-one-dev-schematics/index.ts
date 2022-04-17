@@ -98,7 +98,7 @@ function updateRootModule(_option: any, workspace: any) {
 
     if(_option.search == 'true'){
       const directiveName =  strings.classify(_option.name)
-      const importContent = `import { Search${directiveName}Directive } from './${modulePath}/search-${directiveName}.directive.ts';`
+      const importContent = `import { Search${directiveName}Directive } from './${modulePath}/search-${directiveName}.directive.ts'; \n`
 
       const moduleFiles = getAsSourceFile(host, sharedModulePath)
       const lastImportEndPos = findlastImportEndPos(moduleFiles)
@@ -106,13 +106,13 @@ function updateRootModule(_option: any, workspace: any) {
       const exportEndPos = findExportArray(moduleFiles)
    
       rec.insertLeft(lastImportEndPos + 1, importContent)
-      rec.insertLeft(DeclarationsEndPos - 1, `, Search${directiveName}Directive`)
-      rec.insertLeft(exportEndPos - 1, `, Search${directiveName}Directive`)
+      rec.insertLeft(DeclarationsEndPos - 1, `,Search${directiveName}Directive \n`)
+      rec.insertLeft(exportEndPos - 1, `,Search${directiveName}Directive \n`)
     }
 
     if(_option.loop == 'true'){
       const directiveName =  strings.classify(_option.name)
-      const importContent = `import { ${directiveName}AutoLoopDirective } from './${modulePath}/auto-loop-${directiveName}.directive.ts';`
+      const importContent = `import { ${directiveName}AutoLoopDirective } from './${modulePath}/auto-loop-${directiveName}.directive.ts'; \n`
 
       const moduleFiles = getAsSourceFile(host, sharedModulePath)
       const lastImportEndPos = findlastImportEndPos(moduleFiles)
@@ -120,8 +120,8 @@ function updateRootModule(_option: any, workspace: any) {
       const exportEndPos = findExportArray(moduleFiles)
    
       rec.insertLeft(lastImportEndPos + 1, importContent)
-      rec.insertLeft(DeclarationsEndPos - 1, `, ${directiveName}AutoLoopDirective`)
-      rec.insertLeft(exportEndPos - 1, `, ${directiveName}AutoLoopDirective`)
+      rec.insertLeft(DeclarationsEndPos - 1, `,${directiveName}AutoLoopDirective \n`)
+      rec.insertLeft(exportEndPos - 1, `,${directiveName}AutoLoopDirective \n`)
 
     }
     
