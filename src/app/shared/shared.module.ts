@@ -21,7 +21,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatMenuModule } from '@angular/material/menu'
+import { MatMenuModule } from '@angular/material/menu';
+import { SearchNakhonDirective } from 'src/app/shared/shared.module.ts/Nakhon.directive';
+import { SearchNakhonDirective } from 'src/app/shared/shared.module.ts/Nakhon.directive';
+
+
 
 const mat =[
   CommonModule,
@@ -51,13 +55,15 @@ const mat =[
 @NgModule({
   declarations: [
     DemoDirective,
-    DemoPipe
+    DemoPipe,
+    SearchNakhonDirective,    
 ],
   imports: [
     ...mat
   ],
   exports: [
-    ...mat
+    ...mat,
+    SearchNakhonDirective
 
 ]
 })

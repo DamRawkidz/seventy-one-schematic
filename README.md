@@ -4,7 +4,8 @@ schematics .:se-service --dry-run=false
 <!-- se-service -->
 
 npm run build -- -w
-
+//TODO add import export loop directive 
+//TODO make schemtic easy to call
 # Getting Started With Schematics
 
 This repository is a basic Schematic implementation that serves as a starting point to create and publish Schematics to NPM.
