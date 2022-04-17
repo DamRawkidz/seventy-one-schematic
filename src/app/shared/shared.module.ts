@@ -23,7 +23,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatMenuModule } from '@angular/material/menu'
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { SearchTestDirective } from './src/app/shared/shared.module.ts/search-Test.directive.ts';import { TestAutoLoopDirective } from './src/app/shared/shared.module.ts/auto-loop-Test.directive.ts';
-
+import { SearchTestDirective } from './src/app/shared/shared.module.ts/search-Test.directive.ts';import { TestAutoLoopDirective } from './src/app/shared/shared.module.ts/auto-loop-Test.directive.ts';
 
 
 const mat =[
@@ -55,12 +55,12 @@ const mat =[
   declarations: [
     DemoDirective,
     DemoPipe
-  , SearchTestDirective, TestAutoLoopDirective],
+  , SearchTestDirective, TestAutoLoopDirective, SearchTestDirective, TestAutoLoopDirective],
   imports: [
     ...mat
   ],
   exports: [
     ...mat
-  , SearchTestDirective, TestAutoLoopDirective]
+  , SearchTestDirective, TestAutoLoopDirective, SearchTestDirective, TestAutoLoopDirective]
 })
 export class SharedModule { }
