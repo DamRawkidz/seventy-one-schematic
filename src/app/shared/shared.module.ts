@@ -22,7 +22,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatMenuModule } from '@angular/material/menu';
-import { SearchTestDirective } from 'src/app/shared/shared.module.ts/search-test.directive';
+import { SearchDamDirective } from 'src/app/shared/shared.module.ts/search-dam.directive';
+import { DamAutoLoopDirective } from 'src/app/shared/shared.module.ts/auto-loop-dam.directive';
 
 
 
@@ -45,7 +46,7 @@ const mat =[
   MatFormFieldModule,
   MatInputModule,
   MatGridListModule,
-  MaztTableModule,
+  MatTableModule,
   MatIconModule,
   MatChipsModule,
   MatCheckboxModule,
@@ -64,7 +65,8 @@ const mat =[
   declarations:[,
     DemoDirective,
     DemoPipe,
-    SearchTestDirective,
+    SearchDamDirective,
+    DamAutoLoopDirective,
     
   ],
   imports: [
@@ -72,7 +74,8 @@ const mat =[
   ],
   exports: [
     ...mat,
-    SearchTestDirective,
+    SearchDamDirective,
+    DamAutoLoopDirective,
     
   ]
 })

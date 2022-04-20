@@ -104,7 +104,6 @@ function updateRootModule(_option: any, workspace: any) {
 
     if(_option.search){
       
-
       const startSource = getAsSourceFile(host,'src/app/shared/shared.module.ts')
 
       let importPath = strings.dasherize(`${_option.path}/search-${_option.name}.directive`)
@@ -137,7 +136,6 @@ function updateRootModule(_option: any, workspace: any) {
       ) as InsertChange[];
 
       for (const change of exportChange) {
-        console.log(typeof change)
         if(change.path) {
           exportRecoder.insertLeft(change.pos, change.toAdd)
         }
@@ -150,7 +148,7 @@ function updateRootModule(_option: any, workspace: any) {
       
     }
 
-    if(!_option.loop){
+    if(_option.loop){
 
       const recorder = host.beginUpdate(sharedModulePath)
 
@@ -171,8 +169,13 @@ function updateRootModule(_option: any, workspace: any) {
         recorder.insertLeft(change.pos, change.toAdd);
       }
 
+      host.commitUpdate(recorder)
+
+
+      const exportSource = getAsSourceFile(host,'src/app/shared/shared.module.ts')
+      const exportRecoder = host.beginUpdate(sharedModulePath);
       const exportChange = addExportToModule(
-        source,
+        exportSource,
         sharedModulePath,
         classifyNameLoop,
         importPathLoop
@@ -180,11 +183,15 @@ function updateRootModule(_option: any, workspace: any) {
 
       
 
-      for (const change of exportChange) {        
-        recorder.insertLeft(change.pos, change.toAdd);
+      for (const change of exportChange) {  
+        if(change.path){
+          exportRecoder.insertLeft(change.pos, change.toAdd);
+        }
       }
 
-      // host.commitUpdate(recorder)
+      host.commitUpdate(exportRecoder)
+
+      
       // const directiveName =  strings.classify(_option.name)
       // const importContent = `import { ${directiveName}AutoLoopDirective } from './${''}/auto-loop-${directiveName}.directive.ts'; \n`
 
