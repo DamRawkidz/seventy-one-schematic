@@ -99,20 +99,58 @@ function updateRootModule(_option: any, workspace: any) {
     const sharedModulePath = `src/app/shared/shared.module.ts`;
     const directiveName =  strings.classify(_option.name)
     const rec = host.beginUpdate(sharedModulePath)
-
-    if(_option.search == 'true'){
-        const text = host.read('src/app/shared/shared.module.ts');
+    const text = host.read('src/app/shared/shared.module.ts');
+    
       if (text === null) {
         throw new SchematicsException('dont find');
       }
     
       const sourceText = text.toString('utf-8');
       const source = ts.createSourceFile('src/app/shared/shared.module.ts', sourceText, ts.ScriptTarget.Latest, true);
+
+    if(_option.search == 'true'){
+
+      let importPath = strings.dasherize(`${_option.path}/search-${_option.name}.directive`)
+
+      const classifyName = `Search${directiveName}Directive`
+      
       const changes = addDeclarationToModule(
         source,
         sharedModulePath,
-        `Search${directiveName}Directive`,
-        `${_option.path}/${directiveName}.directive`
+        classifyName,
+        importPath
+      ) as InsertChange[];
+      
+      for (const change of changes) {        
+        // if (change instanceof InsertChange) {
+          rec.insertLeft(change.pos, change.toAdd); 
+        // }
+      }
+
+      const exportChange = addExportToModule(
+        source,
+        sharedModulePath,
+        classifyName,
+        importPath
+      ) as InsertChange[];
+
+      for (const change of exportChange) {    
+        console.log(changes);    
+        rec.insertLeft(change.pos, change.toAdd);
+      }
+    }
+
+    if(_option.loop == 'true'){
+
+      const importPathLoop = `${_option.path}/auto-loop-${_option.name}.directive`
+
+      const classifyNameLoop = `${directiveName}AutoLoopDirective`
+      
+      const changes = addDeclarationToModule(
+        source,
+        sharedModulePath,
+        classifyNameLoop,
+        importPathLoop
       ) as InsertChange[];
       
       for (const change of changes) {        
@@ -122,46 +160,26 @@ function updateRootModule(_option: any, workspace: any) {
       const exportChange = addExportToModule(
         source,
         sharedModulePath,
-        `Search${directiveName}Directive`,
-        `${_option.path}/${directiveName}.directive`
+        classifyNameLoop,
+        importPathLoop
       ) as InsertChange[];
+
+      
 
       for (const change of exportChange) {        
         rec.insertLeft(change.pos, change.toAdd);
       }
+      // const directiveName =  strings.classify(_option.name)
+      // const importContent = `import { ${directiveName}AutoLoopDirective } from './${''}/auto-loop-${directiveName}.directive.ts'; \n`
 
-
-    // host.commitUpdate(rec);
-    
-
-      if(false){
-        const directiveName =  strings.classify(_option.name)
-        const importContent = `import { Search${directiveName}Directive } from './search-${directiveName}.directive.ts'; \n`
-
-      const moduleFiles = getAsSourceFile(host, sharedModulePath)
-      const lastImportEndPos = findlastImportEndPos(moduleFiles)
-      const DeclarationsEndPos = findDeclarationsArray(moduleFiles)
-      const exportEndPos = findExportArray(moduleFiles)
+      // const moduleFiles = getAsSourceFile(host, sharedModulePath)
+      // const lastImportEndPos = findlastImportEndPos(moduleFiles)
+      // const DeclarationsEndPos = findDeclarationsArray(moduleFiles)
+      // const exportEndPos = findExportArray(moduleFiles)
    
-      rec.insertLeft(lastImportEndPos + 1, importContent)
-      rec.insertLeft(DeclarationsEndPos - 1, `,Search${directiveName}Directive \n`)
-      rec.insertLeft(exportEndPos - 1, `,Search${directiveName}Directive \n`)
-      }
-      
-    }
-
-    if(_option.loop == 'false'){
-      const directiveName =  strings.classify(_option.name)
-      const importContent = `import { ${directiveName}AutoLoopDirective } from './${''}/auto-loop-${directiveName}.directive.ts'; \n`
-
-      const moduleFiles = getAsSourceFile(host, sharedModulePath)
-      const lastImportEndPos = findlastImportEndPos(moduleFiles)
-      const DeclarationsEndPos = findDeclarationsArray(moduleFiles)
-      const exportEndPos = findExportArray(moduleFiles)
-   
-      rec.insertLeft(lastImportEndPos + 1, importContent)
-      rec.insertLeft(DeclarationsEndPos - 1, `,${directiveName}AutoLoopDirective \n`)
-      rec.insertLeft(exportEndPos - 1, `,${directiveName}AutoLoopDirective \n`)
+      // rec.insertLeft(lastImportEndPos + 1, importContent)
+      // rec.insertLeft(DeclarationsEndPos - 1, `,${directiveName}AutoLoopDirective \n`)
+      // rec.insertLeft(exportEndPos - 1, `,${directiveName}AutoLoopDirective \n`)
 
     }
     
@@ -205,30 +223,30 @@ function autoLoopFilter(_options: any): Rule {
 }
 
 
-function getAsSourceFile(host: Tree, path: string): ts.SourceFile {
-  const file = host.read(path);
-  if (!file) {
-    throw new SchematicsException(`${path} not found`)
-  }
+// function getAsSourceFile(host: Tree, path: string): ts.SourceFile {
+//   const file = host.read(path);
+//   if (!file) {
+//     throw new SchematicsException(`${path} not found`)
+//   }
 
-  return ts.createSourceFile(
-    path,
-    file.toString(),
-    ts.ScriptTarget.Latest,
-    true
-  )
-}
+//   return ts.createSourceFile(
+//     path,
+//     file.toString(),
+//     ts.ScriptTarget.Latest,
+//     true
+//   )
+// }
 
-function findlastImportEndPos(file: ts.SourceFile): number {
-  let pos: number = 0;
-  file.forEachChild((child: ts.Node) => {
-    if (child.kind === ts.SyntaxKind.ImportDeclaration) {
-      pos = child.end
-    }
-  })
+// function findlastImportEndPos(file: ts.SourceFile): number {
+//   let pos: number = 0;
+//   file.forEachChild((child: ts.Node) => {
+//     if (child.kind === ts.SyntaxKind.ImportDeclaration) {
+//       pos = child.end
+//     }
+//   })
 
-  return pos;
-}
+//   return pos;
+// }
 
 // function findImportArray(file: ts.SourceFile): number {
 //   let pos: number = 0;
@@ -253,52 +271,52 @@ function findlastImportEndPos(file: ts.SourceFile): number {
 
 //   return pos
 // }
-function findDeclarationsArray(file: ts.SourceFile): number {
-  let pos: number = 0;
+// function findDeclarationsArray(file: ts.SourceFile): number {
+//   let pos: number = 0;
 
-  file.forEachChild((node: ts.Node) => {
-    if (node.kind === ts.SyntaxKind.ClassDeclaration) {
-      node.forEachChild((classChild: ts.Node) => {
-        if (classChild.kind === ts.SyntaxKind.Decorator) {
-          classChild.forEachChild((moduleDeclaration: ts.Node) => {
-            moduleDeclaration.forEachChild((objectLitreal: ts.Node) => {
-              objectLitreal.forEachChild((property: ts.Node) => {
-                if (property.getFullText().includes('declarations')) {
-                  pos = property.end
-                }
-              })
-            })
-          })
-        }
-      })
-    }
-  })
+//   file.forEachChild((node: ts.Node) => {
+//     if (node.kind === ts.SyntaxKind.ClassDeclaration) {
+//       node.forEachChild((classChild: ts.Node) => {
+//         if (classChild.kind === ts.SyntaxKind.Decorator) {
+//           classChild.forEachChild((moduleDeclaration: ts.Node) => {
+//             moduleDeclaration.forEachChild((objectLitreal: ts.Node) => {
+//               objectLitreal.forEachChild((property: ts.Node) => {
+//                 if (property.getFullText().includes('declarations')) {
+//                   pos = property.end
+//                 }
+//               })
+//             })
+//           })
+//         }
+//       })
+//     }
+//   })
 
-  return pos
-}
+//   return pos
+// }
 
-function findExportArray(file: ts.SourceFile): number {
-  let pos: number = 0;
+// function findExportArray(file: ts.SourceFile): number {
+//   let pos: number = 0;
 
-  file.forEachChild((node: ts.Node) => {
-    if (node.kind === ts.SyntaxKind.ClassDeclaration) {
-      node.forEachChild((classChild: ts.Node) => {
-        if (classChild.kind === ts.SyntaxKind.Decorator) {
-          classChild.forEachChild((moduleDeclaration: ts.Node) => {
-            moduleDeclaration.forEachChild((objectLitreal: ts.Node) => {
-              objectLitreal.forEachChild((property: ts.Node) => {
-                if (property.getFullText().includes('exports')) {
-                  pos = property.end
-                }
-              })
-            })
-          })
-        }
-      })
-    }
-  })
+//   file.forEachChild((node: ts.Node) => {
+//     if (node.kind === ts.SyntaxKind.ClassDeclaration) {
+//       node.forEachChild((classChild: ts.Node) => {
+//         if (classChild.kind === ts.SyntaxKind.Decorator) {
+//           classChild.forEachChild((moduleDeclaration: ts.Node) => {
+//             moduleDeclaration.forEachChild((objectLitreal: ts.Node) => {
+//               objectLitreal.forEachChild((property: ts.Node) => {
+//                 if (property.getFullText().includes('exports')) {
+//                   pos = property.end
+//                 }
+//               })
+//             })
+//           })
+//         }
+//       })
+//     }
+//   })
 
-  return pos
-}
+//   return pos
+// }
 
 

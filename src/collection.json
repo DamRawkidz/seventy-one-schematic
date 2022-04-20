@@ -6,7 +6,6 @@
       "factory": "./seventy-one-dev-schematics/index#seventyOneDevSchematics",
       "schema": "./seventy-one-dev-schematics/schema.json",
       "aliases": ["ses"]
-      
     }
   }
 }
