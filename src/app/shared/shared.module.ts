@@ -22,10 +22,18 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatMenuModule } from '@angular/material/menu';
-import { SearchAsdDirective } from 'src/app/shared/shared.module.ts/search-asd.directive';
-import { SearchAsdDirective } from 'src/app/shared/shared.module.ts/search-asd.directive';
-import { AsdAutoLoopDirective } from 'src/app/shared/shared.module.ts/auto-loop-asd.directive';
-import { AsdAutoLoopDirective } from 'src/app/shared/shared.module.ts/auto-loop-asd.directive';
+import { SearchTestDirective } from 'src/app/shared/shared.module.ts/search-test.directive';
+
+
+
+
+
+
+
+
+
+
+
 
 const mat =[
   CommonModule,
@@ -37,7 +45,7 @@ const mat =[
   MatFormFieldModule,
   MatInputModule,
   MatGridListModule,
-  MatTableModule,
+  MaztTableModule,
   MatIconModule,
   MatChipsModule,
   MatCheckboxModule,
@@ -53,11 +61,10 @@ const mat =[
 ]
 
 @NgModule({
-  declarations: [
+  declarations:[,
     DemoDirective,
     DemoPipe,
-    SearchAsdDirective,
-    AsdAutoLoopDirective,
+    SearchTestDirective,
     
   ],
   imports: [
@@ -65,8 +72,7 @@ const mat =[
   ],
   exports: [
     ...mat,
-    SearchAsdDirective,
-    AsdAutoLoopDirective,
+    SearchTestDirective,
     
   ]
 })

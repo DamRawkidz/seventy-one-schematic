@@ -9,7 +9,6 @@
             "description": "The path at which to create the component file, relative to the current workspace. Default is a folder with the same name as the component in the project root.",
             "visible": false
           },
-          
           "project": {
             "type": "string",
             "description": "Specifies the project to run schematic in",
@@ -25,19 +24,19 @@
             "x-prompt": "What name would you like to use for the service?"
           },
         "spec": {
-            "type": "string",
+            "type": "boolean",
             "description": "Specifies if a spec file  is generated",
-            "default": "true"
+            "default": true
         },
         "search": {
-            "type": "string",
+            "type": "boolean",
             "description": "generate directive for autocomplete",
-            "default": "true"
+            "default": true
         },
         "loop": {
-          "type": "string",
+          "type": "boolean",
           "description": "generate directive for loop",
-          "default": "true"
+          "default": true
       }
     }
 }

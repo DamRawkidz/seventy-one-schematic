@@ -35,6 +35,7 @@ import { Tree } from '@angular-devkit/schematics/src/tree/interface';
 import { InsertChange } from '@schematics/angular/utility/change';
 import ts = require('typescript');
 import { addDeclarationToModule, addExportToModule } from '../lib/schematics-angular-utils/ast-utils';
+
 // import * as ts from 'typescript';
 // import { NodePackageInstallTask,RunSchematicTask } from '@angular-devkit/schematics/tasks';
 // import { NodePackageTaskOptions } from '@angular-devkit/schematics/tasks/package-manager/options';
@@ -98,35 +99,36 @@ function updateRootModule(_option: any, workspace: any) {
     
     const sharedModulePath = `src/app/shared/shared.module.ts`;
     const directiveName =  strings.classify(_option.name)
-    const rec = host.beginUpdate(sharedModulePath)
-    const text = host.read('src/app/shared/shared.module.ts');
+    const recorder = host.beginUpdate(sharedModulePath)
     
-      if (text === null) {
-        throw new SchematicsException('dont find');
-      }
-    
-      const sourceText = text.toString('utf-8');
-      const source = ts.createSourceFile('src/app/shared/shared.module.ts', sourceText, ts.ScriptTarget.Latest, true);
 
-    if(_option.search == 'true'){
+    if(_option.search){
+      
+
+      const startSource = getAsSourceFile(host,'src/app/shared/shared.module.ts')
 
       let importPath = strings.dasherize(`${_option.path}/search-${_option.name}.directive`)
-
+      
       const classifyName = `Search${directiveName}Directive`
       
-      const changes = addDeclarationToModule(
-        source,
+      const declarationChanges = addDeclarationToModule(
+        startSource,
         sharedModulePath,
         classifyName,
         importPath
-      ) as InsertChange[];
+      ) as InsertChange[]
+
+
       
-      for (const change of changes) {        
-        // if (change instanceof InsertChange) {
-          rec.insertLeft(change.pos, change.toAdd); 
-        // }
+      for (const change of declarationChanges) {                        
+        recorder.insertLeft(change.pos, change.toAdd);   
       }
 
+      host.commitUpdate(recorder)
+
+      
+      const source = getAsSourceFile(host,'src/app/shared/shared.module.ts')
+      const exportRecoder = host.beginUpdate(sharedModulePath);
       const exportChange = addExportToModule(
         source,
         sharedModulePath,
@@ -134,13 +136,25 @@ function updateRootModule(_option: any, workspace: any) {
         importPath
       ) as InsertChange[];
 
-      for (const change of exportChange) {    
-        console.log(changes);    
-        rec.insertLeft(change.pos, change.toAdd);
+      for (const change of exportChange) {
+        console.log(typeof change)
+        if(change.path) {
+          exportRecoder.insertLeft(change.pos, change.toAdd)
+        }
       }
+
+      host.commitUpdate(exportRecoder)
+
+      
+
+      
     }
 
-    if(_option.loop == 'true'){
+    if(!_option.loop){
+
+      const recorder = host.beginUpdate(sharedModulePath)
+
+      const source = getAsSourceFile(host,'src/app/shared/shared.module.ts')
 
       const importPathLoop = `${_option.path}/auto-loop-${_option.name}.directive`
 
@@ -154,7 +168,7 @@ function updateRootModule(_option: any, workspace: any) {
       ) as InsertChange[];
       
       for (const change of changes) {        
-        rec.insertLeft(change.pos, change.toAdd);
+        recorder.insertLeft(change.pos, change.toAdd);
       }
 
       const exportChange = addExportToModule(
@@ -167,8 +181,10 @@ function updateRootModule(_option: any, workspace: any) {
       
 
       for (const change of exportChange) {        
-        rec.insertLeft(change.pos, change.toAdd);
+        recorder.insertLeft(change.pos, change.toAdd);
       }
+
+      // host.commitUpdate(recorder)
       // const directiveName =  strings.classify(_option.name)
       // const importContent = `import { ${directiveName}AutoLoopDirective } from './${''}/auto-loop-${directiveName}.directive.ts'; \n`
 
@@ -187,9 +203,9 @@ function updateRootModule(_option: any, workspace: any) {
 
 
 
-    host.commitUpdate(rec)
     
-
+    
+    
     return host
   }
 }
@@ -223,19 +239,23 @@ function autoLoopFilter(_options: any): Rule {
 }
 
 
-// function getAsSourceFile(host: Tree, path: string): ts.SourceFile {
-//   const file = host.read(path);
-//   if (!file) {
-//     throw new SchematicsException(`${path} not found`)
-//   }
+function getAsSourceFile(host: Tree, path: string): ts.SourceFile {
+  const text = host.read(path);    
+  if (text === null) {
+    throw new SchematicsException('dont find');
+  }
+  const sourceText = text.toString('utf-8');
+  if (!sourceText) {
+    throw new SchematicsException(`${path} not found`)
+  }
 
-//   return ts.createSourceFile(
-//     path,
-//     file.toString(),
-//     ts.ScriptTarget.Latest,
-//     true
-//   )
-// }
+  return ts.createSourceFile(
+    path,
+    sourceText,
+    ts.ScriptTarget.Latest,
+    true
+  )
+}
 
 // function findlastImportEndPos(file: ts.SourceFile): number {
 //   let pos: number = 0;
