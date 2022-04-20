@@ -26,6 +26,10 @@ import { SearchDamDirective } from 'src/app/shared/shared.module.ts/search-dam.d
 import { DamAutoLoopDirective } from 'src/app/shared/shared.module.ts/auto-loop-dam.directive';
 import { SearchTesttestDirective } from 'undefined/search-testtest.directive';
 import { TesttestAutoLoopDirective } from 'undefined/auto-loop-testtest.directive';
+import { SearchTestDirective } from 'undefined/search-test.directive';
+import { TestAutoLoopDirective } from 'undefined/auto-loop-test.directive';
+import { SearchZxczxcDirective } from 'undefined/search-zxczxc.directive';
+import { ZxczxcAutoLoopDirective } from 'undefined/auto-loop-zxczxc.directive';
 
 
 
@@ -71,6 +75,10 @@ const mat =[
     DamAutoLoopDirective,
     SearchTesttestDirective,
     TesttestAutoLoopDirective,
+    SearchTestDirective,
+    TestAutoLoopDirective,
+    SearchZxczxcDirective,
+    ZxczxcAutoLoopDirective,
     
   ],
   imports: [
@@ -82,6 +90,10 @@ const mat =[
     DamAutoLoopDirective,
     SearchTesttestDirective,
     TesttestAutoLoopDirective,
+    SearchTestDirective,
+    TestAutoLoopDirective,
+    SearchZxczxcDirective,
+    ZxczxcAutoLoopDirective,
     
   ]
 })

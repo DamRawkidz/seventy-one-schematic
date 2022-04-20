@@ -1,5 +1,5 @@
 import { Directive, ElementRef, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { Subject,fromEvent } from 'rxjs';
+import { Subject,fromEvent,of } from 'rxjs';
 import { debounceTime, map, switchMap, tap, takeUntil, filter,catchError } from 'rxjs/operators';
 import { <%= classify(name) %>Service } from './<%= dasherize(name) %>.service';
 
