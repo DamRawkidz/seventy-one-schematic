@@ -1,6 +1,6 @@
 import { Directive, ElementRef, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subject,fromEvent } from 'rxjs';
-import { debounceTime, map, switchMap, tap, takeUntil, filter } from 'rxjs/operators';
+import { debounceTime, map, switchMap, tap, takeUntil, filter,catchError } from 'rxjs/operators';
 import { <%= classify(name) %>Service } from './<%= dasherize(name) %>.service';
 
 @Directive({
@@ -19,7 +19,9 @@ export class Search<%= classify(name) %>Directive implements OnInit, OnDestroy  
       debounceTime(500),
       map((e: any) => e.target.value),
       filter(text => text.length >= 3),
-      switchMap(text => this.<%= dasherize(name) %>SV.queryString(`${text}`)),
+      switchMap(text => this.<%= dasherize(name) %>SV.queryString(`${text}`).pipe(
+            catchError(err => of([]))
+        )),
       tap(result => this.searchResult.emit(result)),
       takeUntil(this.unsubAll$)
     ).subscribe()
