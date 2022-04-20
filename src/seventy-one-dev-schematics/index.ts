@@ -92,9 +92,9 @@ function updateRootModule(_option: any, workspace: any) {
 
 
 
-    if (!_option.path) {
-      _option.path = 'src/app/shared/shared.module.ts'
-    }
+    // if (!_option.path) {
+    //   _option.path = 'src/app/shared/shared.module.ts'
+    // }
 
     
     const sharedModulePath = `src/app/shared/shared.module.ts`;

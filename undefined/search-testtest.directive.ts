@@ -1,5 +1,5 @@
 import { Directive, ElementRef, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject,fromEvent } from 'rxjs';
 import { debounceTime, map, switchMap, tap, takeUntil, filter } from 'rxjs/operators';
 import { TesttestService } from './testtest.service';
 

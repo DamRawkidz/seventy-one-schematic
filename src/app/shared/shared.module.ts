@@ -24,6 +24,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatMenuModule } from '@angular/material/menu';
 import { SearchDamDirective } from 'src/app/shared/shared.module.ts/search-dam.directive';
 import { DamAutoLoopDirective } from 'src/app/shared/shared.module.ts/auto-loop-dam.directive';
+import { SearchTesttestDirective } from 'undefined/search-testtest.directive';
+import { TesttestAutoLoopDirective } from 'undefined/auto-loop-testtest.directive';
 
 
 
@@ -67,6 +69,8 @@ const mat =[
     DemoPipe,
     SearchDamDirective,
     DamAutoLoopDirective,
+    SearchTesttestDirective,
+    TesttestAutoLoopDirective,
     
   ],
   imports: [
@@ -76,6 +80,8 @@ const mat =[
     ...mat,
     SearchDamDirective,
     DamAutoLoopDirective,
+    SearchTesttestDirective,
+    TesttestAutoLoopDirective,
     
   ]
 })
