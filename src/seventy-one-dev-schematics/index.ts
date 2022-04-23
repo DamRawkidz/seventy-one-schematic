@@ -35,6 +35,8 @@ import { Tree } from '@angular-devkit/schematics/src/tree/interface';
 import { InsertChange } from '@schematics/angular/utility/change';
 import ts = require('typescript');
 import { addDeclarationToModule, addExportToModule } from '../lib/schematics-angular-utils/ast-utils';
+import { makedefaultPath } from '../lib/util/default-path';
+
 
 // import * as ts from 'typescript';
 // import { NodePackageInstallTask,RunSchematicTask } from '@angular-devkit/schematics/tasks';
@@ -46,6 +48,10 @@ import { addDeclarationToModule, addExportToModule } from '../lib/schematics-ang
 export function seventyOneDevSchematics(_options: any): Rule {
   return (host: Tree, _context: SchematicContext) => {
     const workspace = getWorkSpace(_options, host)
+    _options.project = (_options.project === 'defaultProject') ? workspace.defaultProject : _options.project
+    if (!_options.path) {                        
+      _options.path = makedefaultPath(_options,workspace)
+  }
     let files = url('./files')
     const newhost = apply(files, [
       move(_options.path),
@@ -71,8 +77,7 @@ export function seventyOneDevSchematics(_options: any): Rule {
 }
 
 function getWorkSpace(_option: any, host: Tree) {
-  const workspec = host.read('/angular.json');
-
+  const workspec = host.read('/angular.json');  
   if (!workspec) {
     throw new SchematicsException('angular.json file not found');
   }
@@ -80,23 +85,10 @@ function getWorkSpace(_option: any, host: Tree) {
 }
 
 function updateRootModule(_option: any, workspace: any) {
-  // console.log(_option)
-
   return (host: Tree, _context: SchematicContext): Tree => {
     _option.project = (_option.project === 'defaultProject') ? workspace.defaultProject : _option.project
-    // const project = workspace.project[_option.project]
-
-    // const moduleName = strings.dasherize(_option.name)
-
-    // const exportModuleName = strings.classify(_option.name)
-
-
-
-    // if (!_option.path) {
-    //   _option.path = 'src/app/shared/shared.module.ts'
-    // }
-
     
+  
     const sharedModulePath = `src/app/shared/shared.module.ts`;
     const directiveName =  strings.classify(_option.name)
     const recorder = host.beginUpdate(sharedModulePath)

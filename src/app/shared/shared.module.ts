@@ -30,6 +30,14 @@ import { SearchTestDirective } from 'undefined/search-test.directive';
 import { TestAutoLoopDirective } from 'undefined/auto-loop-test.directive';
 import { SearchZxczxcDirective } from 'undefined/search-zxczxc.directive';
 import { ZxczxcAutoLoopDirective } from 'undefined/auto-loop-zxczxc.directive';
+import { SearchAsasdDirective } from 'src/app/search-asasd.directive';
+import { AsasdAutoLoopDirective } from 'src/app/auto-loop-asasd.directive';
+import { SearchAsdasdasdDirective } from 'src/app/search-asdasdasd.directive';
+import { AsdasdasdAutoLoopDirective } from 'src/app/auto-loop-asdasdasd.directive';
+import { SearchAsdDirective } from 'src/app/search-asd.directive';
+import { AsdAutoLoopDirective } from 'src/app/auto-loop-asd.directive';
+import { SearchZxcDirective } from 'src/app/search-zxc.directive';
+import { ZxcAutoLoopDirective } from 'src/app/auto-loop-zxc.directive';
 
 
 
@@ -79,6 +87,14 @@ const mat =[
     TestAutoLoopDirective,
     SearchZxczxcDirective,
     ZxczxcAutoLoopDirective,
+    SearchAsasdDirective,
+    AsasdAutoLoopDirective,
+    SearchAsdasdasdDirective,
+    AsdasdasdAutoLoopDirective,
+    SearchAsdDirective,
+    AsdAutoLoopDirective,
+    SearchZxcDirective,
+    ZxcAutoLoopDirective,
     
   ],
   imports: [
@@ -94,6 +110,14 @@ const mat =[
     TestAutoLoopDirective,
     SearchZxczxcDirective,
     ZxczxcAutoLoopDirective,
+    SearchAsasdDirective,
+    AsasdAutoLoopDirective,
+    SearchAsdasdasdDirective,
+    AsdasdasdAutoLoopDirective,
+    SearchAsdDirective,
+    AsdAutoLoopDirective,
+    SearchZxcDirective,
+    ZxcAutoLoopDirective,
     
   ]
 })
