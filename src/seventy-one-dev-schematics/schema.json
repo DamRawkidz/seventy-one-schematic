@@ -23,20 +23,20 @@
             },
             "x-prompt": "What name would you like to use for the service?"
           },
-        "spec": {
+        "skiptest": {
             "type": "boolean",
             "description": "Specifies if a spec file  is generated",
-            "default": true
+            "default": false
         },
         "search": {
             "type": "boolean",
             "description": "generate directive for autocomplete",
-            "default": true
+            "default": false
         },
         "loop": {
           "type": "boolean",
           "description": "generate directive for loop",
-          "default": true
+          "default": false
       }
     }
 }

@@ -1,1 +1,2 @@
-<router-outlet></router-outlet>
+<router-outlet *appMajorAutoLoop="let major = data">{{ data.major_name }}</router-outlet>
+<input type="text" appMajorAutoLoop (searchResult)="result($event)">

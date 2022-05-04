@@ -38,6 +38,10 @@ import { SearchAsdDirective } from 'src/app/search-asd.directive';
 import { AsdAutoLoopDirective } from 'src/app/auto-loop-asd.directive';
 import { SearchZxcDirective } from 'src/app/search-zxc.directive';
 import { ZxcAutoLoopDirective } from 'src/app/auto-loop-zxc.directive';
+import { SearchTest2Directive } from 'src/app/search-test2.directive';
+import { Test2AutoLoopDirective } from 'src/app/auto-loop-test2.directive';
+import { Test1AutoLoopDirective } from 'src/app/auto-loop-test1.directive';
+
 
 
 
@@ -95,6 +99,10 @@ const mat =[
     AsdAutoLoopDirective,
     SearchZxcDirective,
     ZxcAutoLoopDirective,
+    SearchTest2Directive,
+    Test2AutoLoopDirective,
+    Test1AutoLoopDirective,
+    
     
   ],
   imports: [
@@ -118,6 +126,9 @@ const mat =[
     AsdAutoLoopDirective,
     SearchZxcDirective,
     ZxcAutoLoopDirective,
+    SearchTest2Directive,
+    Test2AutoLoopDirective,
+    Test1AutoLoopDirective,
     
   ]
 })

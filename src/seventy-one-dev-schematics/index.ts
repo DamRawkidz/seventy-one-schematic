@@ -212,17 +212,16 @@ function updateRootModule(_option: any, workspace: any) {
 
 
 function specFilter(_options: any): Rule {
-  if (_options.spec == 'false') {
-    return filter(path => {
-      return !path.match(/\.spec\.ts$/) && !path.match(/test\.ts$/)
-    })
+  console.log(_options)
+  if (_options.skiptest) {
+    return filter( path => !path.includes('.spec.ts'))
   }
 
-  return filter(path => !path.match(/test\.ts$/))
+  return noop()
 }
 
 function searchFilter(_options: any): Rule {
-  if (_options.search == 'false') {
+  if (_options.search) {
     return filter(path => !path.includes('search-'))
   }
 
@@ -230,7 +229,7 @@ function searchFilter(_options: any): Rule {
 }
 
 function autoLoopFilter(_options: any): Rule {
-  if (_options.loop == 'false') {
+  if (_options.loop) {
     return filter(path => !path.includes('loop-'))
   }
 
