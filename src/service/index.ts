@@ -45,7 +45,7 @@ import { makedefaultPath } from '../lib/util/default-path';
 
 // You don't have to export the function as default. You can also have more than one rule factory
 // per file.
-export function seventyOneDevSchematics(_options: any): Rule {
+export function seventyOneService(_options: any): Rule {
   return (host: Tree, _context: SchematicContext) => {
     const workspace = getWorkSpace(_options, host)
     _options.project = (_options.project === 'defaultProject') ? workspace.defaultProject : _options.project

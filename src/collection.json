@@ -3,8 +3,8 @@
   "schematics": {  
     "se-service": {
       "description": "A blank schematic.",
-      "factory": "./seventy-one-dev-schematics/index#seventyOneDevSchematics",
-      "schema": "./seventy-one-dev-schematics/schema.json",
+      "factory": "./service/index#seventyOneService",
+      "schema": "./service/schema.json",
       "aliases": ["ses"]
     }
   }
