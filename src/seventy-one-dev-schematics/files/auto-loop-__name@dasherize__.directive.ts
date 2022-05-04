@@ -17,8 +17,9 @@ export class <%= classify(name) %>AutoLoopDirective implements OnInit {
 
   ngOnInit(): void {
     this.<%= dasherize(name) %>SV.getAll().pipe(
-      tap(res => res.map(<%= dasherize(name) %> => this.vcf.createEmbeddedView(this.templateRef, {
-        data: <%= dasherize(name) %>
+      tap(res => res.map((<%= dasherize(name) %>, i) => this.vcf.createEmbeddedView(this.templateRef, {
+        data: <%= dasherize(name) %>,
+        index: i
       }))),
     ).subscribe()
   }

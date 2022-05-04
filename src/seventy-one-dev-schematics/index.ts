@@ -212,7 +212,6 @@ function updateRootModule(_option: any, workspace: any) {
 
 
 function specFilter(_options: any): Rule {
-  console.log(_options)
   if (_options.skiptest) {
     return filter( path => !path.includes('.spec.ts'))
   }
