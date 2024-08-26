@@ -43,12 +43,21 @@ import { makedefaultPath } from '../lib/util/default-path';
 export function feature(_options: any): Rule {
   return (host: Tree, _context: SchematicContext) => {
     const workspace = getWorkSpace(_options, host)
+
     _options.project = (_options.project === 'defaultProject') ? workspace.defaultProject : _options.project
-    console.log(_options.path)
+    
     if (!_options.path) {
-      _options.path = makedefaultPath(_options, workspace) + "/feature/menu"
+      _options.path = makedefaultPath(_options, workspace)      
     }
-    console.log(_options.path)
+
+    if(!_options.flat){
+      _options.path  = `${_options.path}/${_options.name}`
+    }
+
+
+
+
+    
 
     let files = url('./files')
     const newhost = apply(files, [

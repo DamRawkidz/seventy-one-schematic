@@ -3,3 +3,5 @@
 *.ts
 !*.d.ts
 !/src/**/files/*.ts
+!/src/**/files/**/*.ts
+!/src/**/files/**/**/*.ts

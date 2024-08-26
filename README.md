@@ -8,7 +8,7 @@ schematics blank http-resource
 run
 schematics .:seventy-one-dev-schematics --dry-run=false
 schematics .:se-service --dry-run=false
-schematics .:ses test test --dry-run=true
+schematics .:sef test test --dry-run=true
 
 tip
 dasherize => html
