@@ -1,11 +1,21 @@
-start schematics .:seventy-one-dev-schematics --dry-run=false
+start
+install dep
+npm install -g @angular-devkit/schematics-cli
+
+create sechmetic
+schematics blank http-resource
+
+run
+schematics .:seventy-one-dev-schematics --dry-run=false
 schematics .:se-service --dry-run=false
+schematics .:ses test test --dry-run=true
 
 <!-- se-service -->
 
 npm run build -- -w
 //TODO make schemtic easy to call
 https://github.com/angular/angular-cli/tree/main/packages/schematics/angular/component
+
 # Getting Started With Schematics
 
 This repository is a basic Schematic implementation that serves as a starting point to create and publish Schematics to NPM.

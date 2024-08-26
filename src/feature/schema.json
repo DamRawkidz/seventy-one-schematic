@@ -1,6 +1,6 @@
 {
-    "$id": "serviceTemplateSchemtic",
-    "title": "Template Service",
+    "$id": "FeatureTemplateSchemtic",
+    "title": "Template Feature",
     "type": "object",
     "properties": {
         "path": {
@@ -22,21 +22,6 @@
               "index": 0
             },
             "x-prompt": "What name would you like to use for the service?"
-          },
-        "skiptest": {
-            "type": "boolean",
-            "description": "Specifies if a spec file  is generated",
-            "default": false
-        },
-        "skipsearch": {
-            "type": "boolean",
-            "description": "generate directive for autocomplete",
-            "default": false
-        },
-        "skiploop": {
-          "type": "boolean",
-          "description": "generate directive for loop",
-          "default": false
-      }
+          }
     }
 }  
