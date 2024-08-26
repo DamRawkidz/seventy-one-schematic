@@ -10,6 +10,10 @@ schematics .:seventy-one-dev-schematics --dry-run=false
 schematics .:se-service --dry-run=false
 schematics .:ses test test --dry-run=true
 
+tip
+dasherize => html
+classify => ts,js
+
 <!-- se-service -->
 
 npm run build -- -w

@@ -12,6 +12,7 @@
     "feature": {
       "description": "create auto template",
       "factory": "./feature/index#feature",
+      "schema": "./feature/schema.json",
       "aliases": [
         "sef"
       ]
