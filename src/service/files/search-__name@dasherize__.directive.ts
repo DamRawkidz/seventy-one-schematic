@@ -4,13 +4,14 @@ import { debounceTime, map, switchMap, tap, takeUntil, filter,catchError } from 
 import { <%= classify(name) %>Service } from './<%= dasherize(name) %>.service';
 
 @Directive({
-  selector: '[appSearch<%= classify(name) %>]'
+  selector: '[appSearch<%= classify(name) %>]',
+  standalone: true,
 })
 export class Search<%= classify(name) %>Directive implements OnInit, OnDestroy  {
   @Output() searchResult = new EventEmitter();
   private unsubAll$ = new Subject<boolean>()
   constructor(
-    private <%= dasherize(name) %>SV: <%= classify(name) %>Service,
+    private <%= camelize(name) %>SV: <%= classify(name) %>Service,
     private element: ElementRef
   ) { }
 
@@ -19,7 +20,7 @@ export class Search<%= classify(name) %>Directive implements OnInit, OnDestroy  
       debounceTime(500),
       map((e: any) => e.target.value),
       filter(text => text.length >= 3),
-      switchMap(text => this.<%= dasherize(name) %>SV.queryString(`${text}`).pipe(
+      switchMap(text => this.<%= camelize(name) %>SV.queryString(`${text}`).pipe(
             catchError(err => of([]))
         )),
       tap(result => this.searchResult.emit(result)),

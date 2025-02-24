@@ -16,8 +16,8 @@
           "type": "string",
           "description": "Specifies the project to run schematic in",
           "$default": {
-        "$source": "projectName"
-      }
+          "$source": "projectName"
+        }
       },
         "name": {
           "type": "string",

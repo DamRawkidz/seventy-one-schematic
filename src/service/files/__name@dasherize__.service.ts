@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BaseService } from 'src/app/core/base/base-service';
-
+import { BaseService } from 'seventy-one-base';
+export interface <%= classify(name) %> {
+  
+}
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +11,8 @@ import { BaseService } from 'src/app/core/base/base-service';
 export class <%= classify(name) %>Service  extends BaseService {
  
   constructor(
-    public http: HttpClient
+    
   ) {
-    super('',http)
+    super('/<%= underscore(name) %>')
    }
 }
