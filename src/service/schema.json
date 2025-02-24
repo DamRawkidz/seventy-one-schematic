@@ -43,6 +43,11 @@
           "type": "boolean",
           "description": "generate directive for loop",
           "default": false
+      },
+      "flat": {
+          "type": "boolean",
+          "description": "generate file with out folder",
+          "default": true
       }
     }
 }  

@@ -1,6 +1,13 @@
-<h1>Search</h1>
+<section class="p-4">Search</section>
 <div class="grid gap-4 grid-cols-2 grid-row-2">
-  <input type="text" class="grid-col-span-1">
-  <input type="text" class="grid-col-span-1">
-  <button class="col-start-2 row-start-2">test</button>
+  <mat-form-field class="w-full grid-col-span-1">
+    <mat-label>Name</mat-label>
+    <input matInput [(ngModel)]="request.name">
+  </mat-form-field>
+  <div class="col-start-2 row-start-1  place-items-center">
+    <button mat-raised-button (click)="onClickSearch<%= classify(name) %>()">Search</button>
+  </div>
+  <div class="col-start-2 row-start-2 text-right justify-center">
+    <button mat-raised-button [routerLink]="['/app/<%= dasherize(name) %>/add']">Add</button>
+  </div>
 </div>

@@ -1,6 +1,40 @@
-<h1>Form</h1>
-<div class="grid gap-4 grid-cols-2 grid-row-2">
-  <input type="text" class="grid-col-span-1">
-  <input type="text" class="grid-col-span-1">
-  <button class="col-start-2 row-start-2">test</button>
-</div>
+<form [formGroup]="form">
+  <mat-card class="p-4">
+    <mat-card-header>
+      <mat-card-title> <%= classify(name) %> Information</mat-card-title>
+    </mat-card-header>
+    <br>
+    <mat-card-content>
+      <div class="grid gap-4 grid-cols-4 grid-row-4">
+        <div class="col-start-1 row-start-1">
+          <mat-form-field class="w-full">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="name">
+          </mat-form-field>
+        </div>
+        <div class="col-start-2 row-start-1">
+          <mat-form-field class="w-full">
+            <mat-label>Last Name</mat-label>
+            <input matInput formControlName="code">
+          </mat-form-field>
+        </div>
+
+        <div class="col-start-3 row-start-1">
+          <mat-form-field>
+            <mat-label>Demo Select</mat-label>
+            <mat-select >
+              @for (g of []  ; track $index) {
+              <mat-option [value]="g.id">{{ g.name }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <br>
+  <div class="flex justify-end gap-4">
+    <button mat-raised-button SEBack>Back</button>
+    <button mat-flat-button (click)="save()">Save</button>
+  </div>
+</form>

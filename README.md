@@ -12,6 +12,7 @@ run feature
     schematics .:feature --dry-run=false 
 run service
     schematics .:service --dry-run=false 
+    ng g se-schematic:ses levelType --skiploop --skiptest --skipsearch
 <!-- schematics .:seventy-one-dev-schematics --dry-run=false -->
 
 
@@ -31,6 +32,12 @@ classify => ts,js
 · camelize — change the text to ‘camelCase’ convention (my-comp calculate to myComp)
 
 · underscore — change the text to ‘_’convention (my-comp calculate to my_comp)
+
+
+deploy 
+npm version patch
+npm pack
+npm publish
 
 <!-- se-service -->
 
