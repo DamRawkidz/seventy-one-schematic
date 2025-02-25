@@ -1,6 +1,6 @@
 {
   "name": "se-schematic",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A blank schematics",
   "scripts": {
     "build": "tsc -p tsconfig.json",
@@ -17,7 +17,6 @@
     "@angular-devkit/core": "^13.3.3",
     "@angular-devkit/schematics": "^13.3.3",
     "@schematics/angular": "^13.3.3",
-    "se-schematic": "file:se-schematic-0.0.1.tgz",
     "typescript": "~4.3.2"
   },
   "devDependencies": {
